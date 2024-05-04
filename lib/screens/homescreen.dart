@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:wordwizard_mad_etr/models/api.dart';
 import 'package:wordwizard_mad_etr/components/drawer.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -148,62 +150,262 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(
-                height: 5,
+                height: 10,
               ),
               Divider(
                 thickness: 2,
               ),
               SizedBox(
-                height: 5,
+                height: 10,
               ),
-              Text("${responseModel?.word ?? ""}"),
-              Text(responseModel?.phonetic ?? ""),
-              if (responseModel?.meanings != null)
-                ...responseModel!.meanings!.map(
-                  (meaning) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${meaning.partOfSpeech ?? ""}:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      if (meaning.definitions != null)
-                        ...meaning.definitions!.map(
-                          (definition) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '- ${definition.definition ?? "N/A"}',
-                                style: TextStyle(fontStyle: FontStyle.italic),
-                              ),
-                              if (definition.example != null)
-                                Text(
-                                  '  Example: ${definition.example}',
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.grey),
-                                ),
-                              if (definition.synonyms != null)
-                                Text(
-                                  '  Synonyms: ${meaning.synonyms!.join(", ")}',
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.grey),
-                                ),
-                              if (definition.antonyms != null)
-                                Text(
-                                  '  Antonyms: ${meaning.antonyms!.join(", ")}',
-                                  style: TextStyle(
-                                      fontStyle: FontStyle.italic,
-                                      color: Colors.grey),
-                                ),
-                            ],
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10),
+                      topRight: Radius.circular(10),
+                    )),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "${responseModel?.word ?? ""}",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      SizedBox(height: 16.0),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          "${responseModel?.phonetic ?? ""}",
+                          style: TextStyle(
+                            fontSize: 17,
+                          ),
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: CircleAvatar(
+                        child: Icon(
+                          Icons.volume_up_outlined,
+                          size: 25,
+                          color: Colors.black,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                color: Colors.blue.shade100,
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding: EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (responseModel?.meanings != null)
+                        ...responseModel!.meanings!.map((meaning) {
+                          if (meaning.partOfSpeech == "noun") {
+                            return Column(
+                              children: [
+                                if (meaning.definitions != null)
+                                  ...meaning.definitions!.map(
+                                    (definition) => Container(
+                                      padding: EdgeInsets.all(19),
+                                      margin: EdgeInsets.symmetric(vertical: 2),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.lightBlue,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
+                                        children: [
+                                          Text(
+                                            "${meaning.partOfSpeech ?? ""}",
+                                            style: TextStyle(
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Definition:',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      horizontal: 10,
+                                                    ),
+                                                    child: Text(
+                                                      "${definition.definition ?? ""}",
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontStyle:
+                                                            FontStyle.italic,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Example:',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  if (definition.example !=
+                                                      null)
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 10,
+                                                      ),
+                                                      child: Text(
+                                                        "${definition.example}",
+                                                        overflow:
+                                                            TextOverflow.fade,
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Synonyms:',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  if (definition.synonyms !=
+                                                      null)
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 10,
+                                                      ),
+                                                      child: Text(
+                                                        '${meaning.synonyms!.join(", ")}',
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Card(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'Antonyms:',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontStyle:
+                                                          FontStyle.italic,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  if (definition.antonyms !=
+                                                      null)
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                        horizontal: 10,
+                                                      ),
+                                                      child: Text(
+                                                        '${meaning.antonyms!.join(", ")}',
+                                                        style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                          color: Colors.grey,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                SizedBox(height: 16.0),
+                              ],
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }),
                     ],
                   ),
                 ),
+              ),
+
               // ListView.builder(
               //   itemCount: responseModel!.meanings!.length,
               //   itemBuilder: (context, index) {
